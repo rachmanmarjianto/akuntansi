@@ -9,14 +9,23 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>SB Admin 2 - Blank</title>
+  <title>SI Akuntansi</title>
 
   <!-- Custom fonts for this template-->
-  <link href="<?php echo base_url('vendor/fontawesome-free/css/all.min.css');?>" rel="stylesheet" type="text/css">
+  <link href="<?php echo base_url('vendor/fontawesome-free/css/all2.css');?>" rel="stylesheet" type="text/css">
   <link href="<?php echo base_url('css/font.css');?>" rel="stylesheet">
 
   <!-- Custom styles for this template-->
   <link href="<?php echo base_url('css/sb-admin-2.min.css');?>" rel="stylesheet">
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="<?php echo base_url('vendor/jquery/jquery.min.js');?>"></script>
+  <script src="<?php echo base_url('vendor/bootstrap/js/bootstrap.bundle.min.js');?>"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="<?php echo base_url('vendor/jquery-easing/jquery.easing.min.js');?>"></script>
+
+   
 
 </head>
 
@@ -31,102 +40,86 @@
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
         <div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-laugh-wink"></i>
+          <i class="fa fa-money-check fa-money-check-alt" style="font-size:30px; color:white"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+        <div class="sidebar-brand-text mx-3">SI Akuntansi</div>
       </a>
 
       <!-- Divider -->
-      <hr class="sidebar-divider my-0">
+      <hr class="sidebar-divider">
+
+      <!-- Heading -->
+      <div class="sidebar-heading">
+        Akun
+      </div>
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="index.html">
+      
+      <li class="nav-item <?php if($controller=='C_home' || $controller=='home') echo 'active';?>">
+        <a class="nav-link" href="<?php echo site_url('C_home');?>">
           <i class="fas fa-book fa-book-alt"></i>
           <span>Jurnal</span></a>
       </li>
 
+      <li class="nav-item  <?php if($controller=='C_bukuBesar') echo 'active';?>">
+        <a class="nav-link" href="<?php echo site_url('C_bukuBesar');?>">
+          <i class="fas fa-archive fa-archive-alt"></i>
+          <span>Buku Besar</span></a>
+      </li>
+
+      <li class="nav-item <?php if($controller=='C_neracaSaldo') echo 'active';?>">
+        <a class="nav-link" href="<?php echo site_url('C_neracaSaldo');?>">
+          <i class="fas fa-balance-scale fa-balance-scale-alt"></i>
+          <span>Neraca Saldo</span></a>
+      </li>
+
+      <li class="nav-item <?php if($controller=='C_labaRugi') echo 'active';?>">
+        <a class="nav-link" href="<?php echo site_url('C_labaRugi');?>">
+          <i class="fas fa-chart-line fa-chart-line-alt"></i>
+          <span>Laba Rugi</span></a>
+      </li>
+
+      <li class="nav-item <?php if($controller=='C_perubahanModal') echo 'active';?>">
+        <a class="nav-link" href="<?php echo site_url('C_perubahanModal');?>">
+          <i class="fas fa-folder fa-folder-alt"></i>
+          <span>Perubahan Modal</span></a>
+      </li>
+
+  <!--    <li class="nav-item ">
+        <a class="nav-link" href="<?php //echo site_url('C_home');?>">
+          <i class="fas fa-money-bill-wave fa-money-bill-wave-alt"></i>
+          <span>Arus Kas</span></a>
+      </li>
+  -->
+      <li class="nav-item <?php if($controller=='C_neraca') echo 'active';?>">
+        <a class="nav-link" href="<?php echo site_url('C_neraca');?>">
+          <i class="fas fa-chart-bar fa-chart-bar-alt"></i>
+          <span>Neraca</span></a>
+      </li>
+
+<!--      <li class="nav-item ">
+        <a class="nav-link" href="<?php echo site_url('C_home');?>">
+          <i class="fas fa-university fa-university-alt"></i>
+          <span>Jurnal Penutup</span></a>
+      </li>
+-->
+
+
       <!-- Divider -->
       <hr class="sidebar-divider">
 
       <!-- Heading -->
       <div class="sidebar-heading">
-        Interface
+        Pengaturan
       </div>
 
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-fw fa-cog"></i>
-          <span>Components</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Components:</h6>
-            <a class="collapse-item" href="buttons.html">Buttons</a>
-            <a class="collapse-item" href="cards.html">Cards</a>
-          </div>
-        </div>
+      <li class="nav-item <?php if($controller=='C_pengaturan') echo 'active';?>">
+        <a class="nav-link" href="<?php echo site_url('C_pengaturan');?>">
+          <i class="fas fa-wrench fa-wrench-alt"></i>
+          <span>Pengaturan Akun</span></a>
       </li>
 
-      <!-- Nav Item - Utilities Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-          <i class="fas fa-fw fa-wrench"></i>
-          <span>Utilities</span>
-        </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Utilities:</h6>
-            <a class="collapse-item" href="utilities-color.html">Colors</a>
-            <a class="collapse-item" href="utilities-border.html">Borders</a>
-            <a class="collapse-item" href="utilities-animation.html">Animations</a>
-            <a class="collapse-item" href="utilities-other.html">Other</a>
-          </div>
-        </div>
-      </li>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        Addons
-      </div>
-
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-          <i class="fas fa-fw fa-folder"></i>
-          <span>Pages</span>
-        </a>
-        <div id="collapsePages" class="collapse show" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Login Screens:</h6>
-            <a class="collapse-item" href="login.html">Login</a>
-            <a class="collapse-item" href="register.html">Register</a>
-            <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-            <div class="collapse-divider"></div>
-            <h6 class="collapse-header">Other Pages:</h6>
-            <a class="collapse-item" href="404.html">404 Page</a>
-            <a class="collapse-item active" href="blank.html">Blank Page</a>
-          </div>
-        </div>
-      </li>
-
-      <!-- Nav Item - Charts -->
-      <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-          <i class="fas fa-fw fa-chart-area"></i>
-          <span>Charts</span></a>
-      </li>
-
-      <!-- Nav Item - Tables -->
-      <li class="nav-item">
-        <a class="nav-link" href="tables.html">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Tables</span></a>
-      </li>
+      
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">

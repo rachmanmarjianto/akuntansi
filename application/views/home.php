@@ -1,11 +1,493 @@
+        <!-- Custom styles for this page -->
+        <link href="<?php echo base_url('css/bootstrap-select.min.css');?>" rel="stylesheet"> 
+        <link href="<?php echo base_url('css/datepicker.css');?>" rel="stylesheet">
+        <script src="<?php echo base_url('js/bootstrap-select.min.js');?>"></script>  
+        <style>
+          .icon-del{
+            display:inline-block; 
+            padding-left:5px; 
+            position: relative; 
+            top:-0.5em;
+            cursor:pointer;
+            color:red;    
 
-
+          }
+        </style>
+        
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
-          <!-- Page Heading -->
-          <h1 class="h3 mb-4 text-gray-800">Blank Page</h1>
+          <h1 class="h3 mb-4 text-gray-800">Jurnal</h1>
+
+          <div class="card shadow mb-4">
+              <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Tambah Akun Pada Jurnal</h6>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-3">
+                    <p class="h6 text-center text-primary">Jenis Akun</p>
+                  </div>
+                  <div class="col-md-6">
+                    <p class="h6 text-center text-primary">Nama Akun</p>
+                  </div>
+                  <div class="col-md-3">
+                    <p class="h6 text-center text-primary"></p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-3">
+                    <select class="custom-select" id="pilihJenisAkun" size="3" onchange="standarPenambahan(this)">
+                      <option value="aset" selected="">Aset</option>
+                      <option value="liabilitas">Liabilitas</option>
+                      <option value="ekuitas">Ekuitas</option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-6">
+                    <select class="selectpicker" data-live-search="true" id="namaAkun">
+                      
+                    </select>  
+                    <input type="text" class="form-control" placeholder="Keterangan" id="keteranganAkun" style="margin-top:6px;">
+                  </div>
+
+
+                  <div class="col-md-3 text-center">
+                    <button class="btn btn-success" onclick="tambahAkun()" style="margin-top:20px">
+                      <span class="text">
+                        Tambahkan
+                      </span>
+                    </button>
+                  </div>
+                </div>
+                
+              </div>
+          </div>
+
+
+          <!---- Jurnal Sementara -------->
+          <div class="card shadow mb-4">
+              <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary" >Hari ini : <span id="tanggalToday"></span></h6>
+              </div>
+              <div class="card-body">
+                <table class="table table-bordered" id="jurnalSementara">
+                  <thead>
+                    <tr>
+                      <th scope="col" style="width:64%; text-align:center">Keterangan</th>
+                      <th scope="col" style="width:18%; text-align:center">Debit</th>
+                      <th scope="col" style="width:18%; text-align:center">Kredit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td> 
+                        Bahan Habis Pakai 
+                        <a style="font-size: 0.5rem;" onclick="hapusJurnal(this)">
+                          <i class="fa fa-times fa-lg icon-del" aria-hidden="true"></i>
+                        </a>
+                        <input type="hidden" name="akunJurnal[]" value="14">
+                        <br>
+                        <input type="text" name="ketAkunJurnal[14]" class="form-control" style="border: 0;box-shadow: none;padding-left:10px;font-size:12px; font-style:italic" value="Bayar Sewa Gedung" readonly>
+                      </td>
+                      <td style="text-align:center">
+                        <input type="number" name="debit[14]" class="form-control" value="0" style="border: 0;box-shadow: none; text-align:right" onchange="updateBalance()">
+                      </td>
+                      <td style="text-align:center">
+                        <input type="number" name="kredit[14]" class="form-control" value="0" style="border: 0;box-shadow: none; text-align:right" onchange="updateBalance()">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Kas 
+                        <a style="font-size: 0.5rem;" onclick="hapusJurnal(this)">
+                          <i class="fa fa-times fa-lg icon-del" aria-hidden="true"></i>
+                        </a>
+                        <input type="hidden" name="akunJurnal[]" value="11">
+                      </td>
+                      <td style="text-align:center">
+                        <input type="number" name="debit[11]" class="form-control" value="0" style="border: 0;box-shadow: none; text-align:right" onchange="updateBalance()">
+                      </td>
+                      <td style="text-align:center">
+                        <input type="number" name="kredit[11]" class="form-control" value="0" style="border: 0;box-shadow: none; text-align:right" onchange="updateBalance()">
+                      </td>
+                    </tr>
+                    
+                  
+
+                  </tbody>
+                </table>
+
+                <table class="table table-bordered">
+                  <thead>
+                    <th scope="col" style="width:64%">Balance</td>
+                    <th scope="col" style="width:36%; text-align:right" id="balanceJurnal">0</td>
+                  </thead>
+                </table>
+
+                <div class="row">
+                  <div class="col-lg-8"></div>
+                  <div class="col-lg-4" style="text-align:right">
+                    <button class="btn btn-success" style="width:100%" onclick="simpanJurnal()" id="buttonSimpanJurnal" disabled>
+                      <span class="text">
+                        Simpan Jurnal
+                      </span>
+                    </button>
+
+                  </div>
+                </div>
+              </div>
+          </div>
+
+
+          <!----- End Of Jurnal Sementara ----------->
+
+          <!----- Jurnal ----------->
+          <div class="card shadow mb-4">
+              <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary" >JURNAL</h6>
+              </div>
+              <div class="card-body">
+                <div class="row" style="padding-bottom:10px">
+                  <div class="col-lg-4">
+                    <div class="row">
+                        <div class="col-lg-5" style="position: relative; top:0.5em; text-align:right">
+                          Tanggal Awal :
+                        </div>
+
+                        <div class="col-lg-7">
+                          <input class="form-control datepicker" id="datepicker1" width="50px" style="display:inline"/>
+                        </div>
+                       
+                    </div>
+                  </div>
+                    
+                  <div class="col-lg-4">
+                    <div class="row">
+                        <div class="col-lg-5" style="position: relative; top:0.5em; text-align:right">
+                          Tanggal Akhir :
+                        </div>
+
+                        <div class="col-lg-7">
+                          <input class="form-control datepicker" id="datepicker2" width="50px" style="display:inline"/>
+                        </div>
+                       
+                    </div>
+
+                  </div>
+
+                  <div class="col-lg-4" style="text-align:center">
+                    <button class="btn btn-success" style="width:100px">
+                      <span class="text">
+                        Submit
+                      </span>
+                    </button>
+                  </div>
+
+                </div>
+                
+                <table class="table table-bordered" >
+                  <thead>
+                    <tr>
+                      <th scope="col" style="width:10%; text-align:center">Tanggal</th>
+                      <th scope="col" style="width:60%; text-align:center">Keterangan</th>
+                      <th scope="col" style="width:15%; text-align:center">Debit</th>
+                      <th scope="col" style="width:15%; text-align:center">Kredit</th>
+                    </tr>
+                  </thead>
+                  <tbody id="jurnalSimpan">
+
+                  </tbody>
+                </table>
+                  
+                
+
+              </div>
+          </div>
+          <!------ End of Jurnal ------------------>
 
         </div>
         <!-- /.container-fluid -->
+
+        <script src="<?php echo base_url('js/bootstrap-datepicker.js'); ?>" type="text/javascript"></script>
+
+        <script>
+          window.onload=function(){
+            loadJenisAkun();
+            var selEl = document.getElementById('pilihJenisAkun');
+            standarPenambahan(selEl);
+            tanggalHariIni();
+            
+          }
+
+
+          var G_debet=0;
+          var G_kredit=0;
+          var bal=0;
+
+          var detailAkun='{"aset":[{"id":"11","akun":"Kas"}, {"id":"12", "akun":"Piutang Usaha"}, {"id":"14", "akun":"Bahan Habis Pakai"}, {"id":"15", "akun":"Stock"}, {"id":"17", "akun":"Tanah"}],\
+                            "liabilitas":[{"id":"21", "akun":"Utang Usaha"},{"id":"23", "akun":"Sewa Diterima Di Muka"}],\
+                            "ekuitas":[{"id":"31", "akun":"Modal"}, {"id":"32", "akun":"Prive"}],\
+                            "pendapatan":[{"id":"41","akun":"Penjualan"},{"id":"42","akun":"Retur Penjualan"}],\
+                            "beban":[{"id":"51","akun":"Beban Gaji"},{"id":"52","akun":"Beban Sewa"}]}';
+
+
+          function updateBalance()
+          {
+            bal=0;
+            G_debit=0;
+            G_kredit=0;
+            var table = document.getElementById('jurnalSementara');
+            var rownum = table.rows.length;
+
+            
+
+            //alert(table.rows[0].cells.length);
+
+            for(var i=1; i<rownum; i++)
+            {
+              var debit =table.rows[i].cells[1].children[0].value;
+              var kredit =table.rows[i].cells[2].children[0].value;
+              if(debit == '')
+                debit=0;
+              
+              if(kredit == '')
+                kredit=0;
+
+              
+              G_debit += debit;
+              G_kredit += kredit;
+              bal += (debit-kredit);
+              
+            }
+
+            
+            document.getElementById('balanceJurnal').innerHTML = bal;
+
+            enabledSimpanJurnal();
+            
+          }
+
+          
+
+          function enabledSimpanJurnal()
+          {
+            var table = document.getElementById('jurnalSementara');
+            var buttonSimpan = document.getElementById('buttonSimpanJurnal');
+
+            var numrow = table.rows.length;
+
+            if(numrow>2)
+            {
+              if(bal == 0 && G_debit !=0 && G_kredit !=0)
+                buttonSimpan.disabled=false;
+              else
+                buttonSimpan.disabled=true;
+            }
+            else
+            {
+              buttonSimpan.disabled=true;
+            }
+          }
+
+
+          function tanggalHariIni()
+          {
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+
+            var tanggal = dd + '-' + mm + '-' + yyyy;
+            document.getElementById('tanggalToday').innerHTML = tanggal;
+          }
+
+          function removeOptions(selectbox)
+          {
+              var i;
+              for(i = selectbox.options.length - 1 ; i >= 0 ; i--)
+              {
+                  selectbox.remove(i);
+              }
+          }
+
+          function loadJenisAkun()
+          {
+            var data = JSON.parse(detailAkun);
+            var selectEl=document.getElementById('pilihJenisAkun');
+            removeOptions(selectEl);
+
+            var keys = Object.keys(data);
+
+            for(var i=0; i<keys.length; i++)
+            {
+              var option = document.createElement("option");
+              if(i==0)
+                option.selected=true;
+              option.text = keys[i].charAt(0).toUpperCase()+keys[i].slice(1);
+              option.value = keys[i];
+              
+              selectEl.add(option);
+            }
+          }
+          
+          
+          function standarPenambahan(curEl)
+          {
+            var data = JSON.parse(detailAkun);
+            var akun=curEl.options[curEl.selectedIndex].value;
+
+            var elSelect = document.getElementById('namaAkun');
+            removeOptions(elSelect);
+
+
+            for(var i=0; i<data[akun].length; i++)
+            {
+              var option = document.createElement("option");
+              option.text = data[akun][i].akun;
+              option.value= data[akun][i].id;
+              
+              elSelect.add(option);
+              
+              // console.log(data[akun][i].id+' isinya '+data[akun][i].akun);
+            }
+
+            $('#namaAkun').selectpicker('refresh');
+          }
+
+          function tambahAkun()
+          {
+            var akun = document.getElementById('namaAkun');
+            var akunId = akun.options[akun.selectedIndex].value;
+            var namaAkun = akun.options[akun.selectedIndex].innerHTML;
+
+            var jenisAkun = document.getElementById('pilihJenisAkun');
+            //alert(jenisAkun.selectedIndex);
+            var jenisAkunVal = jenisAkun.options[jenisAkun.selectedIndex].value;
+
+            var ketAkun = document.getElementById('keteranganAkun').value;
+
+            var tabelJurnal = document.getElementById('jurnalSementara');
+            var rownum = tabelJurnal.rows.length;
+            var row = tabelJurnal.insertRow(rownum);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+
+            cell1.innerHTML = namaAkun+'\
+                        <a style="font-size: 0.5rem;" onclick="hapusJurnal(this)">\
+                          <i class="fa fa-times fa-lg icon-del" aria-hidden="true"></i>\
+                        </a>'+' '+'<input type="hidden" name="akunJurnal[]" value="'+akunId+'">';
+            if(ketAkun != '')
+              cell1.innerHTML += '<input type="text" name="ketAkunJurnal['+akunId+']" class="form-control" style="border: 0;box-shadow: none;padding-left:10px;font-size:12px; font-style:italic" value="'+ketAkun+'" readonly>';
+
+            cell2.innerHTML = '<input type="number" name="debit['+akunId+']" class="form-control" value="0" style="border: 0;box-shadow: none; text-align:right" onchange="updateBalance()">';
+            cell3.innerHTML = '<input type="number" name="kredit['+akunId+']" class="form-control" value="0" style="border: 0;box-shadow: none; text-align:right" onchange="updateBalance()">';
+
+            document.getElementById('keteranganAkun').value='';
+          }
+
+          function hapusJurnal(thisEl)
+          {
+            var rownum=thisEl.parentNode.parentNode.rowIndex;
+            document.getElementById('jurnalSementara').deleteRow(rownum);
+            enabledSimpanJurnal();
+
+          }
+
+          function kosongiTabel(tabel)
+          {
+            var len = tabel.rows.length;
+            len--;
+
+            for(var i=len; i>0; i--)
+            {
+              tabel.deleteRow(i);
+            }
+          }
+
+          function simpanJurnal()
+          {
+            var table = document.getElementById('jurnalSementara');
+            var rownum = table.rows.length;   
+            var rowspan = rownum-1;      
+
+            //alert(table.rows[0].cells.length);
+
+            var tabelJurnal = document.getElementById('jurnalSimpan');
+            var tj_rownum = tabelJurnal.rows.length;
+            tj_rownum--;
+            //alert(tj_rownum);
+            
+
+            for(var i=1; i<rownum; i++)
+            {
+              var akun= table.rows[i].cells[0].innerText;
+              var idAkun = table.rows[i].cells[0].children[1].value;
+
+              var ketAkun='';
+              if(table.rows[i].cells[0].children.length > 3)
+                ketAkun = table.rows[i].cells[0].children[3].value;
+
+              var debit = table.rows[i].cells[1].children[0].value;
+              var kredit = table.rows[i].cells[2].children[0].value;
+
+              var tanggal = document.getElementById('tanggalToday').innerHTML;
+
+
+              //alert(akun+' '+idAkun+' '+ketAkun+' '+debit+' '+kredit+' '+tanggal);
+
+              var row = tabelJurnal.insertRow(tj_rownum+i);
+              //console.log("rowSpan: "+rowspan);
+              //console.log("insert row: "+(tj_rownum+i));
+              if(i==1)
+              {
+                var cell1 = row.insertCell(0);
+                cell1.rowSpan=rowspan;
+                cell1.innerHTML = tanggal;
+                var cell2 = row.insertCell(1);
+                var cell3 = row.insertCell(2);
+                var cell4 = row.insertCell(3);
+               
+              }
+              else
+              {
+                var cell2 = row.insertCell(0);
+                var cell3 = row.insertCell(1);
+                var cell4 = row.insertCell(2);
+              }
+
+              cell2.innerHTML = akun;
+              if(ketAkun != '')
+                cell2.innerHTML += '<br><i style="font-size:12px;padding-left:10px">'+ketAkun+'</i>';
+              
+              cell3.style='text-align:right';
+              cell4.style='text-align:right';
+              if(debit == 0)
+                cell3.innerHTML='';
+              else
+                cell3.innerHTML=debit;
+
+              if(kredit==0)
+                cell4.innerHTML = '';
+              else
+                cell4.innerHTML = kredit;
+
+
+            }
+
+            kosongiTabel(table);
+            enabledSimpanJurnal();
+
+          }
+
+          $('.datepicker').datepicker({
+              format: 'dd/mm/yyyy',
+              autoclose:true
+          }).on('changeDate', function (ev) {
+                $(this).datepicker('hide');
+            });
+
+        </script>
+
 

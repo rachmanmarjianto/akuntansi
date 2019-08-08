@@ -1,0 +1,534 @@
+        <!-- Custom styles for this page -->
+        <link href="<?php echo base_url('vendor/datatables/dataTables.bootstrap4.min.css');?>" rel="stylesheet">
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">Tambah Akun</h6>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-3">
+                  <p class="h6 text-center text-primary">Jenis Akun</p>
+                </div>
+                <div class="col-md-6">
+                  <p class="h6 text-center text-primary">Nama Akun Baru</p>
+                </div>
+                <div class="col-md-3">
+                  <p class="h6 text-center text-primary">Bertambah Dengan</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-3">
+                <select class="custom-select" id="pilihJenisAkun" size="2" onchange="standarPenambahan(this)">
+                  <option value="aset" selected>Aset</option>
+                  <option value="liabilitas">Liabilitas</option>
+                  <option value="ekuitas">Ekuitas</option>
+                  <option value="pendapatan">Pendapatan</option>
+                  <option value="beban">Beban</option>
+                </select>
+                </div>
+                <div class="col-md-6">
+                  <input type="text" class="form-control" id="tambahAkun" aria-describedby="emailHelp" placeholder="Nama Akun ">
+                </div>
+                <div class="col-md-3 text-center">
+                  <select class="custom-select" size="2" id="akunTambahDengan">
+                    <option value="1" selected>Debet</option>
+                    <option value="2">Kredit</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row" style="margin-top:20px">
+                <div class="col-md-9"></div>
+                <div class="col-md-3">
+                  <button class="btn btn-success" onclick="tambahAkun()">
+                    <span class="text">
+                      Tambahkan
+                    </span>
+                  </button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- DataTales aset -->
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">ASET</h6>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="tableAset" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th width="68%">Nama Akun</th>
+                      <th width="12%">Tambah</th>
+                      <th width="12%">Kurang</th>
+                      <th width="8%">Aktiv</th>
+                    </tr>
+                  </thead>
+                  
+                  <tbody id="isiTableAset">
+                    <tr>
+                      <td>Piutang Usaha</td>
+                      <td>
+                        <div id="aset_tambah_1">                                 <!-- ubaLetak(elemen, id) -->
+                          <button class="btn btn-success btn-icon-split" onclick="ubahLetak(this, 1)">
+                            <span class="text" id="debet">Debet</span>
+                          </button>
+                        </div>
+                      </td>
+                      <td>
+                        <div id="aset_kurang_1">
+                          <button class="btn btn-warning btn-icon-split" onclick="ubahLetak(this, 1)">
+                            <span class="text" id="kredit">Kredit</span>
+                          </button>
+                        </div>
+                      </td>
+                      <td>
+                        <input type="checkbox" value="0" onclick="activate(this)">
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td>Kredit</td>
+                      <td>
+                        <div id="aset_tambah_1">                                 <!-- ubaLetak(elemen, id) -->
+                          <button class="btn btn-success btn-icon-split" onclick="ubahLetak(this, 1)">
+                            <span class="text" id="debet">Debet</span>
+                          </button>
+                        </div>
+                      </td>
+                      <td>
+                        <div id="aset_kurang_1">
+                          <button class="btn btn-warning btn-icon-split" onclick="ubahLetak(this, 1)">
+                            <span class="text" id="kredit">Kredit</span>
+                          </button>
+                        </div>
+                      </td>
+                      <td>
+                        <input type="checkbox" value="0" onclick="activate(this)">
+                      </td>
+                    </tr>
+                    
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- end of aset table -->
+
+
+          <!-- DataTales Liabilitas -->
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">LIABILITAS</h6>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="tableLiabilitas" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th width="68%">Nama Akun</th>
+                      <th width="12%">Tambah</th>
+                      <th width="12%">Kurang</th>
+                      <th width="8%">Aktiv</th>
+                    </tr>
+                  </thead>
+                  
+                  <tbody id="isiTableLiabilitas">
+                    <tr>
+                      <td>Hutang Usaha</td>
+                      <td>
+                        <div id="liabilitas_tambah_1">                                 <!-- ubaLetak(elemen, id) -->
+                          <button class="btn btn-success btn-icon-split" onclick="ubahLetak(this, 1)">
+                            <span class="text" id="debet">Debet</span>
+                          </button>
+                        </div>
+                      </td>
+                      <td>
+                        <div id="liabilitas_kurang_1">
+                          <button class="btn btn-warning btn-icon-split" onclick="ubahLetak(this, 1)">
+                            <span class="text" id="kredit">Kredit</span>
+                          </button>
+                        </div>
+                      </td>
+                      <td>
+                        <input type="checkbox" value="0" onclick="activate(this)">
+                      </td>
+                    </tr>
+                    
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- end of aset table -->
+
+
+          <!-- DataTables Ekuitas -->
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">Ekuitas</h6>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="tableEkuitas" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th width="68%">Nama Akun</th>
+                      <th width="12%">Tambah</th>
+                      <th width="12%">Kurang</th>
+                      <th width="8%">Aktiv</th>
+                    </tr>
+                  </thead>
+                  
+                  <tbody id="isiTableEkuitas">
+                    <tr>
+                      <td>Modal</td>
+                      <td>
+                        <div id="ekuitas_tambah_1">                                 <!-- ubaLetak(elemen, id) -->
+                          <button class="btn btn-success btn-icon-split" onclick="ubahLetak(this, 1)">
+                            <span class="text" id="debet">Debet</span>
+                          </button>
+                        </div>
+                      </td>
+                      <td>
+                        <div id="ekuitas_kurang_1">
+                          <button class="btn btn-warning btn-icon-split" onclick="ubahLetak(this, 1)">
+                            <span class="text" id="kredit">Kredit</span>
+                          </button>
+                        </div>
+                      </td>
+                      <td>
+                        <input type="checkbox" value="0" onclick="activate(this)">
+                      </td>
+                    </tr>
+                    
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- end of aset table -->
+
+
+          <!-- DataTables Pendapatan -->
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">Pendapatan</h6>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="tablePendapatan" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th width="68%">Nama Akun</th>
+                      <th width="12%">Tambah</th>
+                      <th width="12%">Kurang</th>
+                      <th width="8%">Aktiv</th>
+                    </tr>
+                  </thead>
+                  
+                  <tbody id="isiTablePendapatan">
+                    <tr>
+                      <td>Penjualan</td>
+                      <td>
+                        <div id="pendapatan_tambah_1">                                 <!-- ubaLetak(elemen, id) -->
+                          <button class="btn btn-success btn-icon-split" onclick="ubahLetak(this, 1)">
+                            <span class="text" id="debet">Debet</span>
+                          </button>
+                        </div>
+                      </td>
+                      <td>
+                        <div id="pendapatan_kurang_1">
+                          <button class="btn btn-warning btn-icon-split" onclick="ubahLetak(this, 1)">
+                            <span class="text" id="kredit">Kredit</span>
+                          </button>
+                        </div>
+                      </td>
+                      <td>
+                        <input type="checkbox" value="0" onclick="activate(this)">
+                      </td>
+                    </tr>
+                    
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- end of Pendapatan table -->
+
+          <!-- DataTables Pendapatan -->
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">Beban</h6>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="tableBeban" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th width="68%">Nama Akun</th>
+                      <th width="12%">Tambah</th>
+                      <th width="12%">Kurang</th>
+                      <th width="8%">Aktiv</th>
+                    </tr>
+                  </thead>
+                  
+                  <tbody id="isiTableBeban">
+                    <tr>
+                      <td>Beban Gaji</td>
+                      <td>
+                        <div id="pendapatan_tambah_1">                                 <!-- ubaLetak(elemen, id) -->
+                          <button class="btn btn-success btn-icon-split" onclick="ubahLetak(this, 1)">
+                            <span class="text" id="debet">Debet</span>
+                          </button>
+                        </div>
+                      </td>
+                      <td>
+                        <div id="pendapatan_kurang_1">
+                          <button class="btn btn-warning btn-icon-split" onclick="ubahLetak(this, 1)">
+                            <span class="text" id="kredit">Kredit</span>
+                          </button>
+                        </div>
+                      </td>
+                      <td>
+                        <input type="checkbox" value="0" onclick="activate(this)">
+                      </td>
+                    </tr>
+                    
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- end of Pendapatan table -->
+          
+
+         
+
+        </div>
+        <!-- /.container-fluid -->
+
+        <script>
+
+          var jenisAkunName = '{"jenisAkun":["aset","liabilitas", "ekuitas", "pendapatan", "beban"]}';
+
+          window.onload=function(){
+            setTableReady();
+          }
+
+          function ubahLetak(elemen, id)
+          {
+            var tipe = elemen.childNodes[1].id;
+
+            var parent = elemen.parentNode.id;
+            var n = parent.indexOf("_");
+            
+            var akun = parent.substr(0,n);
+           // alert(akun);
+
+            var m = parent.lastIndexOf("_");
+
+            //alert(parent.length+' '+m);
+
+            n++;
+            var x = m-n;
+            
+            var parentType = parent.substr(n,x);
+            //alert(parentType);
+            var neigh='';
+            if(parentType=='tambah')
+              neigh=akun+'_kurang_'+id;
+            else
+              neigh=akun+'_tambah_'+id;
+
+            /* 
+              Tambahkan ajax disini yang melakukan update ke database!!
+              respon ajax jika sukses adalah perubahan letak debet kredit.
+              respon ajax jika gagal adalah notifikasi atau alert dengan pesan error!
+            */
+
+            if(tipe=='debet')
+            {
+              var curEl = document.getElementById(parent);
+              curEl.innerHTML = '<button class="btn btn-warning btn-icon-split" onclick="ubahLetak(this, '+id+')">\
+                                  <span class="text" id="kredit">Kredit</span>\
+                                </button>';
+                                
+              var curNeigh = document.getElementById(neigh);
+              curNeigh.innerHTML = '<button class="btn btn-success btn-icon-split" onclick="ubahLetak(this, '+id+')">\
+                                  <span class="text" id="debet">Debet</span>\
+                                </button>';
+              
+            }
+            else
+            {
+              var curEl = document.getElementById(parent);
+              curEl.innerHTML = '<button class="btn btn-success btn-icon-split" onclick="ubahLetak(this, '+id+')">\
+                                  <span class="text" id="debet">Debet</span>\
+                                </button>';
+                                
+              var curNeigh = document.getElementById(neigh);
+              curNeigh.innerHTML = '<button class="btn btn-warning btn-icon-split" onclick="ubahLetak(this, '+id+')">\
+                                  <span class="text" id="kredit">Kredit</span>\
+                                </button>';
+              
+            }
+
+            
+
+          }
+
+
+          function standarPenambahan(curEl)
+          {
+            var akun=curEl.options[curEl.selectedIndex].value;
+
+            switch(akun)
+            {
+              case 'aset': 
+                  document.getElementById('akunTambahDengan').selectedIndex = 0;
+                  break;
+              case 'liabilitas': 
+                  document.getElementById('akunTambahDengan').selectedIndex = 1;
+                  break;
+              case 'equitas': 
+                  document.getElementById('akunTambahDengan').selectedIndex = 1;
+                  break;
+              case 'pendapatan': 
+                  document.getElementById('akunTambahDengan').selectedIndex = 1;
+                  break;
+              case 'beban': 
+                  document.getElementById('akunTambahDengan').selectedIndex = 0;
+                  break;
+              
+
+            }
+          }
+
+          function activate(checkbox)
+          {
+            //gunakan ajax untuk update status, jika success ubah nilai dan status checked
+            if(checkbox.checked)
+            {
+              checkbox.value=1;
+            }
+            else
+            {
+              checkbox.value=0;
+            }
+          }
+
+          function setTableReady()
+          {
+            var jenisAkun = JSON.parse(jenisAkunName);
+
+            for(var i=0; i<jenisAkun.jenisAkun.length; i++)
+            {
+              var str = jenisAkun.jenisAkun[i];
+              var idTab='#table'+str.charAt(0).toUpperCase()+str.slice(1);
+
+                        
+              $(idTab).DataTable();
+              $('.dataTables_length').addClass('bs-select');
+                
+
+            }
+            //alert(jenisAkun.jenisAkun.length);
+          }
+/*
+          $(document).ready(function () {
+            $('#tableAset').DataTable();
+            $('.dataTables_length').addClass('bs-select');
+            });
+
+          $(document).ready(function () {
+            $('#tableLiabilitas').DataTable();
+            $('.dataTables_length').addClass('bs-select');
+            });
+
+          $(document).ready(function () {
+            $('#tableEkuitas').DataTable();
+            $('.dataTables_length').addClass('bs-select');
+            });
+*/
+          
+          function tambahAkun()
+          {
+            var akun = document.getElementById('tambahAkun').value;
+
+            if(akun=='')
+            {
+              alert('Nama Akun Belum Diisi');
+              return false;
+            }
+
+            var jA = document.getElementById('pilihJenisAkun');
+            var jenisAkun = jA.options[jA.selectedIndex].value;
+
+            
+
+            var tD = document.getElementById('akunTambahDengan');
+            var tambahDengan = tD.options[tD.selectedIndex].value;
+
+            //gunakan ajax untuk insert ke DB, jika sukses jalankan code dibawah. jika gagal tolong bikin sendiri notifikasinya
+
+            //jika sukses-----------------
+            var idTable='table'+jenisAkun.charAt(0).toUpperCase()+jenisAkun.slice(1);
+ 
+            var table = document.getElementById(idTable);
+            var rownum = table.rows.length;
+            var row = table.insertRow(rownum);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            var cell4 = row.insertCell(3);
+
+            cell1.innerHTML = akun;
+            if(tambahDengan==1)
+            {
+              cell2.innerHTML = '<div id="'+jenisAkun+'_tambah_'+rownum+'">\
+                                  <button class="btn btn-success btn-icon-split" onclick="ubahLetak(this, '+rownum+')">\
+                                    <span class="text" id="debet">Debet</span>\
+                                  </button>\
+                                </div>';
+              
+              cell3.innerHTML = '<div id="'+jenisAkun+'_kurang_'+rownum+'">\
+                                  <button class="btn btn-warning btn-icon-split" onclick="ubahLetak(this, '+rownum+')">\
+                                    <span class="text" id="kredit">Kredit</span>\
+                                  </button>\
+                                </div>';
+            }
+            else
+            {
+              cell2.innerHTML = '<div id="'+jenisAkun+'_kurang_'+rownum+'">\
+                                  <button class="btn btn-warning btn-icon-split" onclick="ubahLetak(this, '+rownum+')">\
+                                    <span class="text" id="kredit">Kredit</span>\
+                                  </button>\
+                                </div>';
+
+              cell3.innerHTML = '<div id="'+jenisAkun+'_tambah_'+rownum+'">\
+                                  <button class="btn btn-success btn-icon-split" onclick="ubahLetak(this, '+rownum+')">\
+                                    <span class="text" id="debet">Debet</span>\
+                                  </button>\
+                                </div>';
+            }
+            cell4.innerHTML = '<input type="checkbox" value="1" checked onclick="activate(this)">';
+            $(idTable).DataTable();
+            //-------------------------------------------------------------
+
+            document.getElementById('tambahAkun').value="";
+
+           
+
+          }
+
+        </script>
+
+
+        

@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class C_home extends CI_Controller {
+class C_neraca extends CI_Controller {
 
     private $header_data;
 
@@ -18,7 +18,7 @@ class C_home extends CI_Controller {
 	public function index()
 	{
         $this->load->view('headerMenu', $this->header_data);
-        $this->load->view('home');
+        $this->load->view('neraca_home');
         $this->load->view('footer');
 	}
 }
