@@ -195,15 +195,19 @@
               {
               //  if(this.responseText==0)
               //    tambahIsiTable(akun, tambahDengan, jenisAkun, 1);  
-                console.log(this.responseText);
-                if(checkbox.checked)
+               // console.log(this.responseText);
+                if(this.responseText == 0)
                 {
-                  checkbox.value=1;
+                  if(checkbox.checked)
+                  {
+                    checkbox.value=1;
+                  }
+                  else
+                  {
+                    checkbox.value=0;
+                  }
                 }
-                else
-                {
-                  checkbox.value=0;
-                }
+                
               }
               
             }
