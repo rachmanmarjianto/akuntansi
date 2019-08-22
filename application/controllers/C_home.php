@@ -9,10 +9,17 @@ class C_home extends CI_Controller {
     {
         parent::__construct();
         $this->load->helper(array("url"));
+
+        if($_SERVER['SERVER_NAME'] == 'localhost')
+        {
+            redirect(current_url(), 'refresh');
+        }
+
         if(isset($this->uri->segments[1]))
             $this->header_data['controller'] = $this->uri->segments[1];
         else
         $this->header_data['controller'] = 'home';
+        
     }
 
 	public function index()

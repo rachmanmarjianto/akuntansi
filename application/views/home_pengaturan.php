@@ -70,12 +70,16 @@
 
         <script>
 
-          var jenisAkunName = '{"jenisAkun":[{"id":"1", "nama":"aset"},{"id":"2","nama":"liabilitas"}, {"id":"3","nama":"ekuitas"}, {"id":"4","nama":"pendapatan"}, {"id":"5","nama":"beban"}]}';
+        /*  var jenisAkunName = '{"jenisAkun":[{"id":"1", "nama":"aset"},{"id":"2","nama":"liabilitas"}, {"id":"3","nama":"ekuitas"}, {"id":"4","nama":"pendapatan"}, {"id":"5","nama":"beban"}]}';
           var isiTable = '{"aset":[{"namaAkun":"Kas", "tambahDengan":"1","aktiv":"1"},{"namaAkun":"Piutang", "tambahDengan":"1","aktiv":"1"}],\
                             "liabilitas":[{"namaAkun":"Hutang Gaji", "tambahDengan":"0","aktiv":"1"}],\
                             "ekuitas":[{"namaAkun":"Modal", "tambahDengan":"0", "aktiv":"1"}, {"namaAkun":"Laba Ditahan", "tambahDengan":"0", "aktiv":"0"}],\
                             "pendapatan":[{"namaAkun":"Penjualan", "tambahDengan":"0", "aktiv":"1"}],\
                             "beban":[{"namaAkun":"Iklan", "tambahDengan":"1", "aktiv":"1"}, {"namaAkun":"Upah", "tambahDengan":"1", "aktiv":"0"}]}';
+        */
+
+          var jenisAkunName = <?php echo "'".$jenisAkun."'";?>;
+          var isiTable = <?php echo "'".$namaAkun."'";?>;
 
           window.onload=function(){
             setTableReady();
@@ -173,15 +177,46 @@
 
           function activate(checkbox)
           {
-            //gunakan ajax untuk update status, jika success ubah nilai dan status checked
+
+            var namaAkun = checkbox.parentNode.parentNode.childNodes[0].innerHTML;
+            var curstatus =0;
             if(checkbox.checked)
             {
-              checkbox.value=1;
+              curstatus = 1;
             }
-            else
-            {
-              checkbox.value=0;
+            
+
+            url = 'C_pengaturan/activateAkun';
+ 
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function(){
+              //jika berhasil
+              if(this.readyState==4 && this.status == 200)
+              {
+              //  if(this.responseText==0)
+              //    tambahIsiTable(akun, tambahDengan, jenisAkun, 1);  
+                console.log(this.responseText);
+                if(checkbox.checked)
+                {
+                  checkbox.value=1;
+                }
+                else
+                {
+                  checkbox.value=0;
+                }
+              }
+              
             }
+
+            xhttp.open("POST", url, true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send("namaAkun="+namaAkun+"&curstatus="+curstatus);
+            
+            
+            
+
+            //gunakan ajax untuk update status, jika success ubah nilai dan status checked
+            
           }
 
           function setIsiTable()
@@ -269,11 +304,25 @@
             var tD = document.getElementById('akunTambahDengan');
             var tambahDengan = tD.options[tD.selectedIndex].value;
 
+            url = 'C_pengaturan/tambahakun';
+ 
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function(){
+              //jika berhasil
+              if(this.readyState==4 && this.status == 200)
+              {
+                if(this.responseText==0)
+                  tambahIsiTable(akun, tambahDengan, jenisAkun, 1);  
+              }
+              
+            }
 
-            //gunakan ajax untuk insert ke DB, jika sukses jalankan code dibawah. jika gagal tolong bikin sendiri notifikasinya
+            xhttp.open("POST", url, true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send("akun="+akun+"&jenisAkun="+jenisAkun+"&tambahDengan="+tambahDengan);
 
-            //jika sukses-----------------
-            tambahIsiTable(akun, tambahDengan, jenisAkun, 1);
+            
+            
           }
 
           
