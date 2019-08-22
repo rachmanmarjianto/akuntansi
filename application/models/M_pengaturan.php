@@ -91,15 +91,7 @@ class M_pengaturan extends CI_Model{
 
     public function activateAkun($data)
     {  
-        if($data['curstatus']==1)
-            $status=0;
-            
-        else
-            $status=1;
-
         $sql="UPDATE namaakun SET status = ".$data['curstatus']." WHERE nama ='".$data['namaAkun']."'";
-
-        //echo $sql;
 
         if($this->db->query($sql))
             echo 0;
