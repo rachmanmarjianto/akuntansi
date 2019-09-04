@@ -410,88 +410,75 @@
           {
             var table = document.getElementById('jurnalSementara');
             var rownum = table.rows.length;   
-            var rowspan = rownum-1; 
+            var rowspan = rownum-1;      
 
-            var data=[];     
+            //alert(table.rows[0].cells.length);
 
-                        
-            var j=0;
+            var tabelJurnal = document.getElementById('jurnalSimpan');
+            var tj_rownum = tabelJurnal.rows.length;
+            tj_rownum--;
+            //alert(tj_rownum);
+            
 
-            //ambil data dari table jurnal sementara
             for(var i=1; i<rownum; i++)
             {
-              data[j]=[];
-              data[j]['akun']= table.rows[i].cells[0].innerText;
-              data[j]['idAkun'] = table.rows[i].cells[0].children[1].value;
+              var akun= table.rows[i].cells[0].innerText;
+              var idAkun = table.rows[i].cells[0].children[1].value;
 
-              
+              var ketAkun='';
               if(table.rows[i].cells[0].children.length > 3)
-                data[j]['ketAkun'] = table.rows[i].cells[0].children[3].value;
+                ketAkun = table.rows[i].cells[0].children[3].value;
+
+              var debit = table.rows[i].cells[1].children[0].value;
+              var kredit = table.rows[i].cells[2].children[0].value;
+
+              var tanggal = document.getElementById('tanggalToday').innerHTML;
+
+
+              alert(akun+' '+idAkun+' '+ketAkun+' '+debit+' '+kredit+' '+tanggal);
+
+              var row = tabelJurnal.insertRow(tj_rownum+i);
+              //console.log("rowSpan: "+rowspan);
+              //console.log("insert row: "+(tj_rownum+i));
+              if(i==1)
+              {
+                var cell1 = row.insertCell(0);
+                cell1.rowSpan=rowspan;
+                cell1.innerHTML = tanggal;
+                var cell2 = row.insertCell(1);
+                var cell3 = row.insertCell(2);
+                var cell4 = row.insertCell(3);
+               
+              }
               else
-                data[j]['ketAkun']='';
+              {
+                var cell2 = row.insertCell(0);
+                var cell3 = row.insertCell(1);
+                var cell4 = row.insertCell(2);
+              }
 
-              data[j]['debit'] = table.rows[i].cells[1].children[0].value;
-              data[j]['kredit'] = table.rows[i].cells[2].children[0].value;
-
-              data[j]['tanggal'] = document.getElementById('tanggalToday').innerHTML;
-
-              j++;
-
+              cell2.innerHTML = akun;
+              if(ketAkun != '')
+                cell2.innerHTML += '<br><i style="font-size:12px;padding-left:10px">'+ketAkun+'</i>';
               
+              cell3.style='text-align:right';
+              cell4.style='text-align:right';
+              if(debit == 0)
+                cell3.innerHTML='';
+              else
+                cell3.innerHTML=debit;
+
+              if(kredit==0)
+                cell4.innerHTML = '';
+              else
+                cell4.innerHTML = kredit;
+
 
             }
 
-            
-            isiTableJurnal(data);
             kosongiTabel(table);
             enabledSimpanJurnal();
 
-          }
-
-          function isiTableJurnal(data)
-          {
-              var tabelJurnal = document.getElementById('jurnalSimpan');
-              var tj_rownum = tabelJurnal.rows.length;
-              tj_rownum--;
-
-              for(i=0; i<data.length; i++)
-              {
-                var row = tabelJurnal.insertRow(tj_rownum+i);
-
-                if(i==1)
-                {
-                  var cell1 = row.insertCell(0);
-                  cell1.rowSpan=data.length;
-                  cell1.innerHTML = data[i]['tanggal'];
-                  var cell2 = row.insertCell(1);
-                  var cell3 = row.insertCell(2);
-                  var cell4 = row.insertCell(3);
-                
-                }
-                else
-                {
-                  var cell2 = row.insertCell(0);
-                  var cell3 = row.insertCell(1);
-                  var cell4 = row.insertCell(2);
-                }
-
-                cell2.innerHTML = data[i]['akun'];
-                if(data[i]['ketAkun'] != '')
-                  cell2.innerHTML += '<br><i style="font-size:12px;padding-left:10px">'+data[i]['ketAkun']+'</i>';
-                
-                cell3.style='text-align:right';
-                cell4.style='text-align:right';
-                if(data[i]['debit'] == 0)
-                  cell3.innerHTML='';
-                else
-                  cell3.innerHTML = data[i]['debit'];
-
-                if(data[i]['kredit']==0)
-                  cell4.innerHTML = '';
-                else
-                  cell4.innerHTML = data[i]['kredit'];
-
-              }              
           }
 
           $('.datepicker').datepicker({
