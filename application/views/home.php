@@ -80,38 +80,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td> 
-                        Bahan Habis Pakai 
-                        <a style="font-size: 0.5rem;" onclick="hapusJurnal(this)">
-                          <i class="fa fa-times fa-lg icon-del" aria-hidden="true"></i>
-                        </a>
-                        <input type="hidden" name="akunJurnal[]" value="14">
-                        <br>
-                        <input type="text" name="ketAkunJurnal[14]" class="form-control" style="border: 0;box-shadow: none;padding-left:10px;font-size:12px; font-style:italic" value="Bayar Sewa Gedung" readonly>
-                      </td>
-                      <td style="text-align:center">
-                        <input type="number" name="debit[14]" class="form-control" value="0" style="border: 0;box-shadow: none; text-align:right" onchange="updateBalance()">
-                      </td>
-                      <td style="text-align:center">
-                        <input type="number" name="kredit[14]" class="form-control" value="0" style="border: 0;box-shadow: none; text-align:right" onchange="updateBalance()">
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        Kas 
-                        <a style="font-size: 0.5rem;" onclick="hapusJurnal(this)">
-                          <i class="fa fa-times fa-lg icon-del" aria-hidden="true"></i>
-                        </a>
-                        <input type="hidden" name="akunJurnal[]" value="11">
-                      </td>
-                      <td style="text-align:center">
-                        <input type="number" name="debit[11]" class="form-control" value="0" style="border: 0;box-shadow: none; text-align:right" onchange="updateBalance()">
-                      </td>
-                      <td style="text-align:center">
-                        <input type="number" name="kredit[11]" class="form-control" value="0" style="border: 0;box-shadow: none; text-align:right" onchange="updateBalance()">
-                      </td>
-                    </tr>
+                    
                     
                   
 
@@ -225,12 +194,14 @@
           var G_kredit=0;
           var bal=0;
 
-          var detailAkun='{"aset":[{"id":"11","akun":"Kas"}, {"id":"12", "akun":"Piutang Usaha"}, {"id":"14", "akun":"Bahan Habis Pakai"}, {"id":"15", "akun":"Stock"}, {"id":"17", "akun":"Tanah"}],\
+          /*var detailAkun='{"aset":[{"id":"11","akun":"Kas"}, {"id":"12", "akun":"Piutang Usaha"}, {"id":"14", "akun":"Bahan Habis Pakai"}, {"id":"15", "akun":"Stock"}, {"id":"17", "akun":"Tanah"}],\
                             "liabilitas":[{"id":"21", "akun":"Utang Usaha"},{"id":"23", "akun":"Sewa Diterima Di Muka"}],\
                             "ekuitas":[{"id":"31", "akun":"Modal"}, {"id":"32", "akun":"Prive"}],\
                             "pendapatan":[{"id":"41","akun":"Penjualan"},{"id":"42","akun":"Retur Penjualan"}],\
                             "beban":[{"id":"51","akun":"Beban Gaji"},{"id":"52","akun":"Beban Sewa"}]}';
+          */
 
+          var detailAkun=<?php echo "'".$detailAkun."'";?>;
 
           function updateBalance()
           {
@@ -420,13 +391,12 @@
             //ambil data dari table jurnal sementara
             for(var i=1; i<rownum; i++)
             {
-              data[j]=[];
+              data[j]={};
               data[j]['akun']= table.rows[i].cells[0].innerText;
               data[j]['idAkun'] = table.rows[i].cells[0].children[1].value;
-
               
-              if(table.rows[i].cells[0].children.length > 3)
-                data[j]['ketAkun'] = table.rows[i].cells[0].children[3].value;
+              if(table.rows[i].cells[0].children.length >= 3)
+                data[j]['ketAkun'] = table.rows[i].cells[0].children[2].value;
               else
                 data[j]['ketAkun']='';
 
@@ -436,29 +406,49 @@
               data[j]['tanggal'] = document.getElementById('tanggalToday').innerHTML;
 
               j++;
-
+            }
+/*
+            //send data to db
+            var jsonData = JSON.stringify(data);
+            
+            url = 'C_home/simpanJurnal';
+ 
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function(){
+              //jika berhasil
+              if(this.readyState==4 && this.status == 200)
+              {
+                console.log(this.responseText);
+                //if(this.responseText==0)
+                   
+              }
               
-
             }
 
-            
+            xhttp.open("POST", url, true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send("data="+jsonData);
+
+*/
             isiTableJurnal(data);
             kosongiTabel(table);
             enabledSimpanJurnal();
-
+  
           }
 
           function isiTableJurnal(data)
           {
               var tabelJurnal = document.getElementById('jurnalSimpan');
               var tj_rownum = tabelJurnal.rows.length;
-              tj_rownum--;
+              
+              //tj_rownum--;
+              
 
               for(i=0; i<data.length; i++)
               {
                 var row = tabelJurnal.insertRow(tj_rownum+i);
 
-                if(i==1)
+                if(i==0)
                 {
                   var cell1 = row.insertCell(0);
                   cell1.rowSpan=data.length;
